@@ -108,7 +108,7 @@ if __name__ == '__main__':
             print("Error converting to RGB")
         # Actual detection. Variable boxes contains the bounding box cordinates for hands detected,
         # while scores contains the confidence for each of these boxes.
-        # Hint: If len(boxes) > 1 , you may assume you have found atleast one hand (within your score threshold)
+        # If len(boxes) > 1 , you may assume you have found atleast one hand (within your score threshold)
 
         boxes, scores = detector_utils.detect_objects(image_np,
                                                       detection_graph, sess)
@@ -138,7 +138,7 @@ if __name__ == '__main__':
                 desktopFlag = True
 
             if len(widthList) == 0 or len(heightList) == 0:
-                
+                # check if any list is empty
                 widthList.clear()
                 heightList.clear()
                 widthList.append([width, time.time()])
@@ -146,20 +146,24 @@ if __name__ == '__main__':
 
             else:
                 if len(widthList) != 0 and len(heightList) != 0:
+                    # if list is not empty
                     prev = widthList.pop()
                     tprev = heightList.pop()
 
                     widthList.append([width, time.time()])
                     heightList.append([height, time.time()])
 
-                    avg = (widthList[0][0] - prev[0])
-
+                    # Difference between two frames
+                    avg = (widthList[0][0] - prev[0]) 
                     tavg = (heightList[0][0] - tprev[0])
 
                     if widthList[0][1] - prev[1] > 1.25:
+                        # if time difference between two frame is more
+                        # than 1.25seconds than clear the List
                         widthList.clear()
                     else:
                         if abs(avg) > 0.20*im_width:
+                            # if distance is more than 20% of the width
                             temp = 0
 
                             if avg < 0:
@@ -175,12 +179,12 @@ if __name__ == '__main__':
                             print(f"Nothing detected on width: {abs(avg)}")
 
                     if heightList[0][1] - tprev[1] > 1.25:
+                        # if time between two frame is more
                         heightList.clear()
 
                     else:
                         if abs(tavg) > 0.3*im_height:
-
-                            # Check the time array for no entry
+                            # if height travelled is more 30% of the height
 
                             if tavg < 0:
                                 up = True
